@@ -24,7 +24,7 @@ export function SiteFooter() {
           <ul className="space-y-2 text-sm text-primary-foreground/70">
             <li><Link to="/matches">Matches</Link></li>
             <li><Link to="/search">Advanced Search</Link></li>
-            <li><Link to="/membership">Membership</Link></li>
+            <li><Link to="/dashboard">Dashboard</Link></li>
             <li><Link to="/login">Login</Link></li>
           </ul>
         </div>
