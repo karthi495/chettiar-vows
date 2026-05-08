@@ -11,7 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as RegisterRouteImport } from './routes/register'
-import { Route as MembershipRouteImport } from './routes/membership'
 import { Route as MatchesRouteImport } from './routes/matches'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as IndexRouteImport } from './routes/index'
@@ -25,11 +24,6 @@ const SearchRoute = SearchRouteImport.update({
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MembershipRoute = MembershipRouteImport.update({
-  id: '/membership',
-  path: '/membership',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MatchesRoute = MatchesRouteImport.update({
@@ -57,7 +51,6 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/matches': typeof MatchesRoute
-  '/membership': typeof MembershipRoute
   '/register': typeof RegisterRoute
   '/search': typeof SearchRoute
   '/profile/$id': typeof ProfileIdRoute
@@ -66,7 +59,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/matches': typeof MatchesRoute
-  '/membership': typeof MembershipRoute
   '/register': typeof RegisterRoute
   '/search': typeof SearchRoute
   '/profile/$id': typeof ProfileIdRoute
@@ -76,7 +68,6 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/matches': typeof MatchesRoute
-  '/membership': typeof MembershipRoute
   '/register': typeof RegisterRoute
   '/search': typeof SearchRoute
   '/profile/$id': typeof ProfileIdRoute
@@ -87,25 +78,16 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/matches'
-    | '/membership'
     | '/register'
     | '/search'
     | '/profile/$id'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/login'
-    | '/matches'
-    | '/membership'
-    | '/register'
-    | '/search'
-    | '/profile/$id'
+  to: '/' | '/login' | '/matches' | '/register' | '/search' | '/profile/$id'
   id:
     | '__root__'
     | '/'
     | '/login'
     | '/matches'
-    | '/membership'
     | '/register'
     | '/search'
     | '/profile/$id'
@@ -115,7 +97,6 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LoginRoute: typeof LoginRoute
   MatchesRoute: typeof MatchesRoute
-  MembershipRoute: typeof MembershipRoute
   RegisterRoute: typeof RegisterRoute
   SearchRoute: typeof SearchRoute
   ProfileIdRoute: typeof ProfileIdRoute
@@ -135,13 +116,6 @@ declare module '@tanstack/react-router' {
       path: '/register'
       fullPath: '/register'
       preLoaderRoute: typeof RegisterRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/membership': {
-      id: '/membership'
-      path: '/membership'
-      fullPath: '/membership'
-      preLoaderRoute: typeof MembershipRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/matches': {
@@ -179,7 +153,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LoginRoute: LoginRoute,
   MatchesRoute: MatchesRoute,
-  MembershipRoute: MembershipRoute,
   RegisterRoute: RegisterRoute,
   SearchRoute: SearchRoute,
   ProfileIdRoute: ProfileIdRoute,
@@ -187,3 +160,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

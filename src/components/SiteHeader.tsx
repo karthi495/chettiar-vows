@@ -10,7 +10,7 @@ export function SiteHeader() {
     { to: "/", label: "Home" },
     { to: "/matches", label: "Matches" },
     { to: "/search", label: "Search" },
-    { to: "/membership", label: "Membership" },
+    { to: "/dashboard", label: "Dashboard" },
   ] as const;
 
   return (
